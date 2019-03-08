@@ -8,7 +8,7 @@ with open(".\\data\\parseme_VIDs.txt", encoding="utf8") as ins:
         VIDs.append(line.rstrip())
 
 
-txt_f= open(".\\data\\gigafida_single_concat_pike.txt", encoding="utf8")
+txt_f= open(".\\data\\ccgigafida_single_concat_pike.txt", encoding="utf8")
 txt = txt_f.read()
 
 #txt = txt[0:10000]
@@ -22,7 +22,7 @@ for VID in VIDs:
 
 txt_ls = txt.split()
 
-with open(".\\gigafida_grouped_VIDs.txt", "w", encoding="utf8") as out:
+with open(".\\ccgigafida_grouped_VIDs.txt", "w", encoding="utf8") as out:
     i=0
     while i < len(txt_ls)-5:
         

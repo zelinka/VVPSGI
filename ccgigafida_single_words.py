@@ -39,7 +39,7 @@ def group(filepath, destination):
 
 
 
-destination_name = "gigafida_single_concat.txt"
+destination_name = "ccgigafida_single_concat.txt"
 open(destination_name, 'w').close()
 destination_file = open(destination_name, "a+", encoding="utf8")
 

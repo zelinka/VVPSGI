@@ -202,7 +202,7 @@ for group in grouped_array:
 
 print("Global counter: ", global_counter)
 
-with open('DATASET.csv', 'w', encoding="utf8") as f:
+with open('DATASET_cckres.csv', 'w', encoding="utf8") as f:
     f.write("Group,Mag Group,Mag Avg,CosDist Sum,DotProd Sum,CosDist Sim,N1,N2,N3,Type\n")
     for item in csv_array:
 

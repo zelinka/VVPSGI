@@ -9,7 +9,7 @@ with open(".\\data\\parseme_VIDs_prunes.txt", encoding="utf8") as ins:
 
 VEC = []
 
-with open(".\\vectors\\gigafida_grouped_VIDs.vec", encoding="utf8") as ins:
+with open(".\\vectors\\ccgigafida_grouped_VIDs.vec", encoding="utf8") as ins:
     for line in ins:
         VEC.append(line.split())
 
@@ -48,7 +48,7 @@ print(VID_wc/len(VID_vec))
 print(OTHR_wc/len(OTHR_vec))
 #print(OTHR_vec[0])
 
-with open(".\\gigafida_VIDs.vec", "w", encoding="utf8") as out:
+with open(".\\ccgigafida_VIDs.vec", "w", encoding="utf8") as out:
     for item in VID_vec:
         #out.write("%s\n" % item)
         for e in item:
@@ -56,7 +56,7 @@ with open(".\\gigafida_VIDs.vec", "w", encoding="utf8") as out:
         out.write("\n")
     
 
-with open(".\\gigafida_OTHRs.vec", "w", encoding="utf8") as out:
+with open(".\\ccgigafida_OTHRs.vec", "w", encoding="utf8") as out:
     for item in OTHR_vec:
         #out.write("%s\n" % item)
         for e in item:

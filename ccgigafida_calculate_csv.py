@@ -86,12 +86,12 @@ def nearest3(vector, all_vectors, words):
         
     return d1, d2, d3, avg_dist_to_similar
 
-VIDs = open(".\\vectors\\gigafida_VIDs.vec", encoding="utf8")
-OTHRs =  open(".\\vectors\\gigafida_OTHRs.vec", encoding="utf8")
+VIDs = open(".\\vectors\\ccgigafida_VIDs.vec", encoding="utf8")
+OTHRs =  open(".\\vectors\\ccgigafida_OTHRs.vec", encoding="utf8")
 
-singles_vec = open(".\\vectors\\gigafida_single_concat.vec", encoding="utf8")
+singles_vec = open(".\\vectors\\ccgigafida_single_concat.vec", encoding="utf8")
 
-group_vec = open(".\\vectors\\gigafida_grouped_VIDs.vec", encoding="utf8")
+group_vec = open(".\\vectors\\ccgigafida_grouped_VIDs.vec", encoding="utf8")
 
 #txt = singles_vec.read()
 #print(txt)
@@ -202,7 +202,7 @@ for group in grouped_array:
 
 print("Global counter: ", global_counter)
 
-with open('DATASET.csv', 'w', encoding="utf8") as f:
+with open('DATASET_ccgigafida.csv', 'w', encoding="utf8") as f:
     f.write("Group,Mag Group,Mag Avg,CosDist Sum,DotProd Sum,CosDist Sim,N1,N2,N3,Type\n")
     for item in csv_array:
 
