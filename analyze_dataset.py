@@ -23,25 +23,18 @@ def analyze(lis):
     print(NegCount/(len(lis)/2))
     print(NoneNeg)
 
+f len(sys.argv) < 2:
+    print("missing corpus argument")
+    sys.exit(1)
 
+corpus = sys.argv[1]
+corp_list = []
 
-cckres = []
-
-with open(".\\data\\DATASET_cckres.csv", encoding="utf8") as ins:
+with open("./data/DATASET_" + corpus + ".csv", encoding="utf8") as ins:
     for line in ins:
-        cckres.append(line)
+        corp_list.append(line)
 
-gigafida = []
+corp_list.pop(0)
 
-with open(".\\data\\DATASET_gigafida.csv", encoding="utf8") as ins:
-    for line in ins:
-        gigafida.append(line)
-
-cckres.pop(0)
-gigafida.pop(0)
-
-
-analyze(cckres)
-print()
-analyze(gigafida)
+analyze(corp_list)
 

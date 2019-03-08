@@ -1,19 +1,19 @@
 from operator import itemgetter
+import sys
 
+if len(sys.argv) < 2:
+    print("missing corpus argument")
+    sys.exit(1)
+
+corpus = sys.argv[1]
 VIDs = []
 
-with open(".\\data\\parseme_VIDs.txt", encoding="utf8") as ins:
-
+with open("./data/parseme_VIDs_prunes.txt", encoding="utf8") as ins:
     for line in ins:
         VIDs.append(line.rstrip())
 
-
-txt_f= open(".\\data\\cckres_singles_concat_pike.txt", encoding="utf8")
+txt_f= open("./data/" + corpus + "_single_concat_pike.txt", encoding="utf8")
 txt = txt_f.read()
-
-#txt = txt[0:10000]
-
-#print(txt.count("biti"))
 
 VID_count = []
 
@@ -22,10 +22,10 @@ for VID in VIDs:
 
 txt_ls = txt.split()
 
-with open(".\\cckres_grouped_VIDs.txt", "w", encoding="utf8") as out:
+print("Finished replacing VIDs")
+with open("./data/" + corpus + "_grouped_VIDs.txt", "w", encoding="utf8") as out:
     i=0
     while i < len(txt_ls)-5:
-        
         i_increase = 1
         group = ""
 
@@ -50,14 +50,13 @@ with open(".\\cckres_grouped_VIDs.txt", "w", encoding="utf8") as out:
                         i_increase = 3
                 else:
                    group = txt_ls[i] + "_" + txt_ls[i+1] + " "
-                   i_increase = 2 
+                   i_increase = 2
             else:
                 group = txt_ls[i]
 
         elif "_" in txt_ls[i]:
-        #else:
             group = txt_ls[i] + " "
-        
+
         i+= i_increase
 
         out.write("%s" % group)

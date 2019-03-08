@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import warnings
+import sys
 
 from sklearn.preprocessing import Imputer
 from sklearn.model_selection import cross_validate
@@ -28,14 +29,15 @@ def printScores(scores):
     print("sensitivity:", (sum(scores['test_recall'])/len(scores['test_recall'])).round(decimals=3))
     print("specificity:", (sum(scores['test_specificity'])/len(scores['test_specificity'])).round(decimals=3))
     print("auc:", (sum(scores['test_roc_auc'])/len(scores['test_roc_auc'])).round(decimals=3))
-    
-
-def printAccuracy(scores):
-    print("accuracy:", scores['test_accuracy'].round(decimals=3), (sum(scores['test_accuracy'])/len(scores['test_accuracy'])).round(decimals=3))
 
 
-dataset = pd.read_csv("./Data/DATASET_cckres.csv").drop('Group', axis=1)
-#dataset = pd.read_csv("./Data/DATASET_gigafida.csv").drop('Group', axis=1)
+if len(sys.argv) < 2:
+    print("missing corpus argument")
+    sys.exit(1)
+
+corpus = sys.argv[1]
+
+dataset = pd.read_csv("./datasets/DATASET_"+ corpus +".csv").drop('Group', axis=1)
 #dataset['Avg N3'] = dataset.apply(lambda row: (row['N1']+row['N2']+row['N3']) / 3, axis=1)
 #dataset['Diff N12'] = dataset.apply(lambda row: (row['N2']-row['N1']), axis=1)
 #dataset['Diff N13'] = dataset.apply(lambda row: (row['N3']-row['N1']), axis=1)
@@ -82,7 +84,7 @@ scoring = {'accuracy': 'accuracy',
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-C_svc = SVC(kernel='rbf')
+C_svc = SVC(kernel='rbf', gamma='auto')
 scores_svc = cross_validate(C_svc, X_imp, y_imp, scoring=scoring, cv=10)
 print("SVM:")
 printScores(scores_svc)

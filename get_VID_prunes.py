@@ -4,18 +4,18 @@ VIDs = []
 #1 prvotno, 2 lemma
 word_type = 2
 
-with open(".\\PARSEME\\SL\\train.cupt", encoding="utf8") as ins:
+with open("./SL/train.cupt", encoding="utf8") as ins:
 
     for line in ins:
-        
+
         if len(line) > 2:
             if line[0] != "#":
                 parseme.append(line.split())
 
-with open(".\\PARSEME\\SL\\test.cupt", encoding="utf8") as ins:
+with open("./SL/test.cupt", encoding="utf8") as ins:
 
     for line in ins:
-        
+
         if len(line) > 2:
             if line[0] != "#":
                 parseme.append(line.split())
@@ -27,7 +27,7 @@ for i in range(len(parseme)):
     if len(parseme[i][10]) > 1:
 
         marks = parseme[i][10].split(";")
-        
+
         for mark in marks:
 
             category = mark.split(":")
@@ -58,7 +58,7 @@ for i in range(len(parseme)):
                                     VID += buffer + " " + parseme[j][word_type]
                                     buffer = ""
                                     duplicate = True
-                                
+
                                 elif mark_j == mwe_id and duplicate == True:
                                     VID += buffer
                                     buffer = ""
@@ -68,7 +68,7 @@ for i in range(len(parseme)):
                                     duplicate = True
 
                             else:
-                                
+
                                 category_j = mark_j.split(":")
 
                                 #print(category_j, len(category_j))
@@ -81,8 +81,8 @@ for i in range(len(parseme)):
 
                                     buffer += " " + parseme[j][word_type]
                                     duplicate = True
-                            
-                        
+
+
                         if end_VID == True:
                             break
 
@@ -94,6 +94,6 @@ VIDs = set(VIDs)
 
 print(len(VIDs))
 
-with open('parseme_VIDs_prunes.txt', 'w', encoding="utf8") as f:
+with open('./data/parseme_VIDs_prunes.txt', 'w', encoding="utf8") as f:
     for item in VIDs:
         f.write("%s\n" % item)

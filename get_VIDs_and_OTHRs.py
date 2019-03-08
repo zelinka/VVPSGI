@@ -1,15 +1,20 @@
 import random
+import sys
 
+if len(sys.argv) < 2:
+    print("missing corpus argument")
+    sys.exit(1)
+
+corpus = sys.argv[1]
 VIDs = []
 
-with open(".\\data\\parseme_VIDs_prunes.txt", encoding="utf8") as ins:
-
+with open("./data/parseme_VIDs_prunes.txt", encoding="utf8") as ins:
     for line in ins:
         VIDs.append(line.rstrip())
 
 VEC = []
 
-with open(".\\vectors\\cckres_grouped_VIDs.vec", encoding="utf8") as ins:
+with open("./vectors/" + corpus + "_grouped_VIDs.vec", encoding="utf8") as ins:
     for line in ins:
         VEC.append(line.split())
 
@@ -19,7 +24,6 @@ VID_wc = 0
 OTHR_wc = 0
 
 for VID in VIDs:
-
     VID = VID.replace(" ", "_")
 
     #print(VID)
@@ -34,7 +38,6 @@ for VID in VIDs:
 OTHR_vec = []
 
 while len(OTHR_vec) < len(VID_vec):
-
     v = random.choice(VEC)
 
     if v not in VID_vec and v not in OTHR_vec:
@@ -43,19 +46,20 @@ while len(OTHR_vec) < len(VID_vec):
 
 
 #print(VID_vec[0])
+print(len(VID_vec))
 print(VID_wc/len(VID_vec))
 print(OTHR_wc/len(OTHR_vec))
 #print(OTHR_vec[0])
 
-with open(".\\cckres_VIDs.vec", "w", encoding="utf8") as out:
+with open("./vectors/" + corpus + "_VIDs.vec", "w", encoding="utf8") as out:
     for item in VID_vec:
         #out.write("%s\n" % item)
         for e in item:
             out.write("%s " % e)
         out.write("\n")
-    
 
-with open(".\\cckres_OTHRs.vec", "w", encoding="utf8") as out:
+
+with open("./vectors/" + corpus + "_OTHRs.vec", "w", encoding="utf8") as out:
     for item in OTHR_vec:
         #out.write("%s\n" % item)
         for e in item:

@@ -3,6 +3,7 @@ from operator import itemgetter
 from scipy import spatial
 import numpy as np
 import math
+import sys
 
 global_counter = 0
 
@@ -13,7 +14,6 @@ def normalize(v):
     return v / norm
 
 def get_single_vectors(candidate, singles_array):
-
     singles = []
     for word in candidate:
         for single in singles_array:
@@ -22,11 +22,10 @@ def get_single_vectors(candidate, singles_array):
 
     return singles
 
-def mag(x): 
+def mag(x):
     return math.sqrt(sum(i**2 for i in x))
 
 def count_matches(t1, t2):
-
     matches = 0
 
     for i in range(len(t1)):
@@ -37,7 +36,6 @@ def count_matches(t1, t2):
 
 
 def nearest3(vector, all_vectors, words):
-
     d1 = 3
     d2 = 3
     d3 = 3
@@ -46,7 +44,6 @@ def nearest3(vector, all_vectors, words):
     similar_dist_sum = 0
 
     for tmp in all_vectors:
-
         v = tmp.copy()
         v.pop(0)
         v = [float(i) for i in v]
@@ -56,7 +53,6 @@ def nearest3(vector, all_vectors, words):
         cos_dist= spatial.distance.cosine(vector, v)
 
         if(len(words) == len(w)):
-
             if(count_matches(words, w) == (len(words) - 1)):
                 similar_counter += 1
                 similar_dist_sum += cos_dist
@@ -70,7 +66,7 @@ def nearest3(vector, all_vectors, words):
             elif cos_dist < d2:
                 d3 = d2
                 d2 = cos_dist
-            
+
             elif cos_dist < d3:
                 d3 = cos_dist
 
@@ -83,19 +79,19 @@ def nearest3(vector, all_vectors, words):
         global_counter += 1
     else:
         avg_dist_to_similar = similar_dist_sum / similar_counter
-        
+
     return d1, d2, d3, avg_dist_to_similar
 
-VIDs = open(".\\vectors\\ccgigafida_VIDs.vec", encoding="utf8")
-OTHRs =  open(".\\vectors\\ccgigafida_OTHRs.vec", encoding="utf8")
+if len(sys.argv) < 2:
+    print("missing corpus argument")
+    sys.exit(1)
 
-singles_vec = open(".\\vectors\\ccgigafida_single_concat.vec", encoding="utf8")
+corpus = sys.argv[1]
 
-group_vec = open(".\\vectors\\ccgigafida_grouped_VIDs.vec", encoding="utf8")
-
-#txt = singles_vec.read()
-#print(txt)
-
+VIDs = open("./vectors/" + corpus + "_VIDs.vec", encoding="utf8")
+OTHRs =  open("./vectors/" + corpus + "_OTHRs.vec", encoding="utf8")
+singles_vec = open("./vectors/" + corpus + "_single_concat.vec", encoding="utf8")
+group_vec = open("./vectors/" + corpus + "_grouped_VIDs.vec", encoding="utf8")
 
 grouped_array = []
 singles_array = []
@@ -103,12 +99,10 @@ csv_array = []
 grouped_array_all = []
 
 with VIDs as ins:
-
     for line in ins:
         grouped_array.append(line.split())
 
 with OTHRs as ins:
-
     for line in ins:
         grouped_array.append(line.split())
 
@@ -126,14 +120,12 @@ print("Finished loading arrays.\n")
 #grouped_array.pop(0)
 singles_array.pop(0)
 
-
 #print(float(grouped_array[0][1]) + float(grouped_array[0][2]))
 
 progress_counter = 0
 progress_max = len(grouped_array)
 
 for group in grouped_array:
-
     #group = grouped_array[75304]
 
     candidate = group[0].split("_")
@@ -143,14 +135,10 @@ for group in grouped_array:
         progress_counter += 1
         continue
 
-
     singles = get_single_vectors(candidate, singles_array)
 
     if len(singles) > 1:
-
         vec_singles_sum = [0] * (len(singles[0])-1)
-
-
 
         for vec in singles:
             #gets rid of the word element, keeping only spatial data
@@ -175,9 +163,7 @@ for group in grouped_array:
         #calculating attributes
 
         cos_dist_sum = spatial.distance.cosine(vec_group, vec_singles_sum)
-
         dot_prod_sum = sum([x*y for x,y in zip(vec_group, vec_singles_sum)])
-        
         vec_sum_avg = [x/len(singles) for x in vec_singles_sum]
 
         mag_avg = mag(vec_sum_avg)
@@ -195,26 +181,21 @@ for group in grouped_array:
     print("Groups processed:", progress_counter, "/", progress_max, len(singles))
 
 
-
 #print("Sorting...")
 #orted_cos_array = sorted(cos_array, key=itemgetter(1))
 #print(sorted_cos_array)
 
 print("Global counter: ", global_counter)
 
-with open('DATASET_ccgigafida.csv', 'w', encoding="utf8") as f:
+with open("./datasets/DATASET_" + corpus + ".csv", 'w', encoding="utf8") as f:
     f.write("Group,Mag Group,Mag Avg,CosDist Sum,DotProd Sum,CosDist Sim,N1,N2,N3,Type\n")
     for item in csv_array:
-
         for i in range(len(item)-1):
             f.write("%s," % item[i])
 
         f.write("%s\n" % item[len(item)-1])
         #print(item)
 
-
-
 #beseda = singles[1]
 #beseda.pop(0)
 #print(beseda)
-
